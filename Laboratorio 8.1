@@ -1,31 +1,66 @@
-# Instalacion y configuracion de Docker
+Comandos utilizados, práctica laboratorio 8.1; Cloud Computing y Contenerización.
 
-# Instalar Docker
-sudo dnf install -y dnf-plugins-core
+
+Instalación y configuración de Docker.
+
+============================================
+
+https://docs.docker.com/engine/install/rhel/
+
+
+#Desinstalar versiones anteriores:
+
+sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine \
+                  podman \
+                  runc
+
+
+#Instalar utilizando repositorio RPM
+
+sudo dnf -y install dnf-plugins-core
 sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io
+
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
 sudo systemctl enable --now docker
+sudo systemctl start docker
+sudo systemctl status docker
+
+sudo docker run hello-world
 docker --version
 
-# Descargar imagen de NGINX
-docker pull nginx:latest
+#Buscar la imagen de Nginx y descargarla:
 
-# Crear volumen persistente
-sudo mkdir -p /home/website
-sudo chmod 777 /home/website
+docker search nginx
+docker pull nginx
 
-# Crear contenedor NGINX
-docker run -d --name web1 \
-  -p 8888:80 \
-  -v /home/website:/usr/share/nginx/html \
-  nginx
+sudo docker images
 
-# Crear página HTML
-echo "<h1>Wilkan Jerez Méndez - Matricula 20221938</h1>" | sudo tee /home/website/index.html
+sudo mkdir /home/website
+cd /home/website/
+nano index.html >
 
-Agregar los puertos al firewall
-sudo firewall-cmd --permanent --add-port=8888/tcp
-sudo firewall-cmd --reload
+<html>
+ <head>
+  <title>DOCKER x NGINX</title>
+ </head>
+ <body>
+  <H3>Fernanda Caraballo<br>
+  Matrícula: 2025-0860</H3>
+ </body>
+</html>
 
-# Probar en navegador
-http://127.0.0.1:8888
+sudo docker run -d -p 8888:80 -v /home/website:/usr/share/nginx/html/ nginx
+
+docker ps -a
+
+#En el navegador de nuestra máquina:
+
+127.0.0.1:8888
