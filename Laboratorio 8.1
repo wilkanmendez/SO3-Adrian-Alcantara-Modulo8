@@ -23,5 +23,9 @@ docker run -d --name web1 \
 # Crear página HTML
 echo "<h1>Wilkan Jerez Méndez - Matricula 20221938</h1>" | sudo tee /home/website/index.html
 
+Agregar los puertos al firewall
+sudo firewall-cmd --permanent --add-port=8888/tcp
+sudo firewall-cmd --reload
+
 # Probar en navegador
 http://127.0.0.1:8888
