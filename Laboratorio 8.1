@@ -1,0 +1,27 @@
+# Instalacion y configuracion de Docker
+
+# Instalar Docker
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io
+sudo systemctl enable --now docker
+docker --version
+
+# Descargar imagen de NGINX
+docker pull nginx:latest
+
+# Crear volumen persistente
+sudo mkdir -p /home/website
+sudo chmod 777 /home/website
+
+# Crear contenedor NGINX
+docker run -d --name web1 \
+  -p 8888:80 \
+  -v /home/website:/usr/share/nginx/html \
+  nginx
+
+# Crear página HTML
+echo "<h1>Wilkan Jerez Méndez - Matricula 20221938</h1>" | sudo tee /home/website/index.html
+
+# Probar en navegador
+http://127.0.0.1:8888
