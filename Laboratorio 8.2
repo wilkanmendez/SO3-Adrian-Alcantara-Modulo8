@@ -1,34 +1,31 @@
-# Instalacion de Portainer
+Comandos utilizados, práctica laboratorio 8.2; Cloud Computing y Contenerización.
 
-# Descargar portainer
-docker pull portainer/portainer-ce:latest
+Instalación de Portainer.
 
-# Crear el contenedor
-docker volume create portainer_data
+============================================
 
-docker run -d \
-  -p 9443:9443 \
-  -p 9000:9000 \
-  -p 8000:8000 \
-  --name portainer \
-  --restart=always \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v portainer_data:/data \
-  portainer/portainer-ce:latest
 
-# Agregar los puertos al firewall
-sudo firewall-cmd --permanent --add-port=9443/tcp
-sudo firewall-cmd --permanent --add-port=9000/tcp
-sudo firewall-cmd --permanent --add-port=8000/tcp
-sudo firewall-cmd --reload
+https://docs.portainer.io/start/install-ce/server/docker/linux
 
-# Acceder
+#Instalar Portainer
+
+sudo docker volume create portainer_data
+
+sudo docker run -d -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
+
+
+docker ps -a
+
+#En el navegador de nuestra máquina:
+
 https://127.0.0.1:9443
-# Crear usuario admin y conectar con el Docker Engine local.
 
-# Detener NGINX desde Portainer
-docker stop web1
+#Una vez creado nuestro usuario e iniciado en la interfaz de Portainer:
 
-# Probar:
-http://127.0.0.1:8888
-# Debe dejar de cargar.
+Add Environments >Docker Standalone >Start Wizard
+
+#Copia el comando para el agente, creado por el Wizard, y pégalo en la CLI de la máquina.
+
+#Devuelta en Portainer, llenamos los apartados "Name" y "Environment address" (En el Environment address colocaremos la ip de la máquina:puerto del agente. Ej: 12.168.1.100:9001). Luego, click en "Connect", y "Close".
+
+Click en el Environment creado >Containers >Nginx >Stop
