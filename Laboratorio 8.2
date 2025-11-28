@@ -16,6 +16,12 @@ docker run -d \
   -v portainer_data:/data \
   portainer/portainer-ce:latest
 
+# Agregar los puertos al firewall
+sudo firewall-cmd --permanent --add-port=9443/tcp
+sudo firewall-cmd --permanent --add-port=9000/tcp
+sudo firewall-cmd --permanent --add-port=8000/tcp
+sudo firewall-cmd --reload
+
 # Acceder
 https://127.0.0.1:9443
 # Crear usuario admin y conectar con el Docker Engine local.
