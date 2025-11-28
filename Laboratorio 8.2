@@ -1,0 +1,28 @@
+# Instalacion de Portainer
+
+# Descargar portainer
+docker pull portainer/portainer-ce:latest
+
+# Crear el contenedor
+docker volume create portainer_data
+
+docker run -d \
+  -p 9443:9443 \
+  -p 9000:9000 \
+  -p 8000:8000 \
+  --name portainer \
+  --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  portainer/portainer-ce:latest
+
+# Acceder
+https://127.0.0.1:9443
+# Crear usuario admin y conectar con el Docker Engine local.
+
+# Detener NGINX desde Portainer
+docker stop web1
+
+# Probar:
+http://127.0.0.1:8888
+# Debe dejar de cargar.
