@@ -1,42 +1,49 @@
-# Despliegue de contenedor de Wordpress utilizando Docker-Compose 
+Comandos utilizados, práctica laboratorio 8.3; Cloud Computing y Contenerización.
 
-# Instalar Docker-compose
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+Despliegue de contenedor de Wordpress utilizando Docker-Compose.
+
+============================================
+
+#Instalar Docker Compose:
+
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-docker-compose --version
+docker-compose version
 
-# Crear carpeta del proyecto
-mkdir wordpress
-cd wordpress
+#Crear directorio para el proyecto:
 
-# Crear el archivo docker-compose.yml
+mkdir ~/wordpress-compose
+cd ~/wordpress-compose
 nano docker-compose.yml
 
-# Pega este contenido:
-version: '3.9'
+>
 
 services:
   db:
-    image: mariadb:latest
+    image: mysql:5.7
+    container_name: wordpress_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: wpdb
-      MYSQL_USER: wpuser
-      MYSQL_PASSWORD: wppass
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_pass
+      MYSQL_ROOT_PASSWORD: root_pass
     volumes:
       - db_data:/var/lib/mysql
 
   wordpress:
     image: wordpress:latest
+    container_name: wordpress_app
     restart: always
     ports:
-      - "8080:80"
+      - "8888:80"
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wpuser
-      WORDPRESS_DB_PASSWORD: wppass
-      WORDPRESS_DB_NAME: wpdb
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_pass
+    depends_on:
+      - db
     volumes:
       - wp_data:/var/www/html
 
@@ -44,16 +51,11 @@ volumes:
   db_data:
   wp_data:
 
-# Desplegar WordPress
-docker-compose up -d
 
-# Ver contenedores
-docker ps
+#Luego de guardar y salir, desplegamos los contenedores:
 
-# Agregar los puertos al firewall
-sudo firewall-cmd --permanent --add-port=8080/tcp
-sudo firewall-cmd --reload
+sudo docker compose up -d
+sudo docker ps
 
-# Acceder a WordPress
-http://127.0.0.1:8080
-# Completar la configuración (usuario admin, sitio, etc.)
+#Desde el navegador:
+http://localhost:8888
